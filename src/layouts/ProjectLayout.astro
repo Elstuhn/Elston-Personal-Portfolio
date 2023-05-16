@@ -1,0 +1,38 @@
+---
+import Layout from "./Layout.astro";
+const { frontmatter } = Astro.props;
+---
+
+<Layout title={"Elston | " + frontmatter.title}>
+  <h1 class="text-center text-3xl text-white font-bold">{frontmatter.title}</h1>
+  <div class="mt-2 text-center text-sm text-gray-400">
+    {new Date(frontmatter.pubDate).toDateString()}
+  </div>
+  <img
+    src={frontmatter.image.url}
+    alt={frontmatter.image.alt}
+    class="h-full w-full rounded-lg object-cover object-center border border-slate-400 p-4 my-6"
+  />
+  <div class="prose">
+    <slot />
+  </div>
+  <a
+    href="/projects"
+    class="text-white px-2 py-2 border border-slate-400 rounded-md flex items-center justify-center hover:bg-slate-400 transition duration-150 ease-in-out hover:text-black mt-4 w-fit"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-4 h-4 mr-2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+    </svg>
+    Back
+  </a>
+</Layout>

@@ -1,0 +1,31 @@
+---
+import NavItem from "./NavItem.astro";
+import Hamburger from "./Hamburger";
+const links = [
+  {
+    label: "Projects",
+    link: "/projects",
+  },
+  {
+    label: "Home",
+    link: "/",
+  },
+];
+---
+
+<nav class="text-white flex mx-auto justify-between items-center py-4">
+  <a
+    href="/"
+    class="text-4xl bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent font-bold"
+  >
+    Elston Tan
+  </a>
+  <ul class="gap-4 hidden md:flex">
+    {
+      links.map((link) => {
+        return <NavItem label={link.label} link={link.link} />;
+      })
+    }
+  </ul>
+  <Hamburger client:load links={links} className="md:hidden" />
+</nav>

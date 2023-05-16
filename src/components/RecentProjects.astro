@@ -1,0 +1,61 @@
+---
+const allProjects = await Astro.glob("../pages/projects/*.md");
+const recentProjects = allProjects
+  .sort((a, b) => {
+    const { frontmatter: A } = a;
+    const { frontmatter: B } = b;
+    return new Date(B.pubDate).getTime() - new Date(A.pubDate).getTime();
+  })
+  .slice(0, 3);
+---
+
+<div
+  class="mt-6 text-2xl font-bold text-white flex gap-2 items-center justify-between"
+>
+  <span>
+    Recent
+    <span
+      class="bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent"
+      >Projects</span
+    >
+  </span>
+  <div class="text-sm">
+    <a href="/projects">View all Projects →</a>
+  </div>
+</div>
+<div class="flex flex-col gap-3 text-white mt-6">
+  {
+    recentProjects.map((project) => {
+      return (
+        <a
+          href={project.url}
+          class="flex rounded-md md:items-center bg-slate-800 p-4 flex-col gap-8 md:flex-row items-center hover:-translate-y-1 transition-all "
+        >
+          <img
+            alt={project.frontmatter.image.alt}
+            src={project.frontmatter.image.url}
+            class="object-contain rounded-md w-32 h-32 border border-slate-600 p-2 shadow-xl"
+          />
+          <div class="flex flex-col justify-center md:items-start items-center gap-x-8 ">
+            <div class="flex gap-2 md:flex-row flex-col items-center">
+              <h2 class="text-xl font-semibold">{project.frontmatter.title}</h2>
+              <div class="flex gap-2 flex-wrap justify-center">
+                {project.frontmatter.tags.map((tag: string) => {
+                  return (
+                    <span class="rounded-md px-2 py-1 text-xs font-semibold border border-blue-300 items-center flex justify-center shadow-lg whitespace-nowrap">
+                      {tag}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            <p class="text-gray-400 text-sm mt-3 md:mt-0 inline-flex">
+              {new Date(project.frontmatter.pubDate).toDateString()}
+            </p>
+            <p class="text-gray-200 mt-4">{project.frontmatter.description}</p>
+          </div>
+        </a>
+      );
+    })
+  }
+</div>

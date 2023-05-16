@@ -1,0 +1,77 @@
+---
+import OutlinedButton from "./OutlinedButton";
+const allProjects = await Astro.glob("../pages/projects/*.md");
+const sortedProjects = allProjects.sort((a, b) => {
+  return (
+    new Date(b.frontmatter.pubDate).getTime() -
+    new Date(a.frontmatter.pubDate).getTime()
+  );
+});
+---
+
+<div class="text-center text-white md:text-left">
+  <h1 class="text-3xl font-bold">View all of my projects here!</h1>
+  <div class="mt-3 text-gray-400">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  </div>
+</div>
+<!-- projects gallery here -->
+<div class="grid grid-cols-1 gap-6 md:grid-cols-3 mt-4 text-white">
+  {
+    sortedProjects.map((project) => {
+      const { frontmatter, url } = project;
+      const { title, pubDate, description, image, codeLink, projectLink } =
+        frontmatter;
+      return (
+        <div class="hover:translate-y-1 transition-all  rounded-md">
+          <div class="overflow-hidden rounded-md bg-slate-800  border border-slate-700">
+            <div class="aspect-w-3 aspect-h-2 p-4">
+              <img
+                class="h-full w-full object-cover rounded-md"
+                src={image.url}
+                alt={image.alt}
+                loading="lazy"
+              />
+            </div>
+            <div class="flex gap-2 px-2 flex-wrap mt-2 justify-center">
+              {project.frontmatter.tags.map((tag: string) => {
+                return (
+                  <span class="rounded-md px-2 py-1 text-xs font-semibold border border-blue-300 items-center flex justify-center shadow-lg whitespace-nowrap">
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
+            <div class="px-3 pt-4 pb-6 text-center">
+              <h2 class="text-xl font-semibold">{title}</h2>
+              <div class="mt-1 text-xs text-gray-400">
+                {new Date(pubDate).toLocaleDateString()}
+              </div>
+              <div class="mt-2 text-sm text-gray-300">
+                {description}{" "}
+                <a class="underline" href={url}>
+                  Learn more
+                </a>
+              </div>
+              <div class="flex gap-2 items-center justify-center mt-6">
+                {codeLink && (
+                  <OutlinedButton label="Link to Code" link={codeLink} />
+                )}
+                {projectLink && (
+                  <a
+                    href={projectLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="transition-all cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                  >
+                    Link to demo
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>

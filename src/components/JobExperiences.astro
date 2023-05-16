@@ -1,0 +1,48 @@
+---
+const allExperiences = await Astro.glob("../content/experiences/*.md");
+---
+
+<div
+  class="mt-6 text-2xl font-bold text-white flex gap-2 items-center justify-between"
+>
+  <span>
+    Job
+    <span
+      class="bg-gradient-to-br from-sky-500 to-cyan-400 bg-clip-text text-transparent"
+      >Experiences</span
+    >
+  </span>
+</div>
+
+<div class="flex flex-col gap-3 text-white mt-6">
+  {
+    allExperiences.map((experience) => {
+      return (
+        <div class="flex rounded-md md:items-center bg-slate-800 p-4 flex-col gap-8 md:flex-row items-center hover:-translate-y-1 transition-all ">
+          <div class="flex flex-col gap-3">
+            <div>
+              <h2 class="text-xl font-semibold">
+                {experience.frontmatter.title}
+              </h2>
+              <span class="text-gray-400 text-sm inline-flex">
+                {new Date(
+                  experience.frontmatter.startDate
+                ).toLocaleDateString()}{" "}
+                -{" "}
+                {new Date(experience.frontmatter.endDate).toLocaleDateString()}
+              </span>
+            </div>
+            <img
+              alt={experience.frontmatter.image.alt}
+              src={experience.frontmatter.image.url}
+              class="object-contain rounded-md w-32 h-32 border border-slate-600 p-2 shadow-xl"
+            />
+          </div>
+          <div class="flex flex-col justify-center md:items-start items-center gap-x-8 ">
+            <div class="prose">{<experience.Content />}</div>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>
